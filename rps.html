@@ -5,16 +5,77 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <div class="score">player Score: <span id="pScore">0</span></div>
+    <div class="score">Computer Score: <span id="cScore">0</span></div>
+    <div class="button-div">
+        <button id=" rock">Rock</button>
+        <button id="paper">Paper</button>
+        <button id="scissors">Scissors</button>
+
+    </div>
+
+    <div id="results"></div>
+
     <script>
+        const buttons = document.querySelectorAll('button');
+        const resultDiv = document.querySelector('#results');
+        const playerScore = document.querySelector('#pScore');
+        const computerScore = document.querySelector('#cScore');
+        let compScore = 0;
+        let playScore = 0;
+        
+
+        buttons.forEach((button) => {
+            button.addEventListener('click', () =>{
+                const playerSelection = button.textContent.toLowerCase();
+                const computerSelection = computerPlay();
+                const play = playRound(playerSelection, computerSelection);
+
+                resultDiv.innerHTML = play;
+                
+                if(compScore === 5){
+                    resultDiv.innerHTML = "GAME OVER YOU LOST";
+                }
+                else if(playScore === 5){
+                    resultDiv.innerHTML = "GAME OVER YOU WON";
+                }
+                else{
+                if(play === "You Win"){
+                    playScore++;
+                    playerScore.textContent = playScore.toString();
+                    if(playScore === 5){
+                        resultDiv.innerHTML = "GAME OVER YOU WON";
+                    }
+                    else if(compScore === 5){
+                        resultDiv.innerHTML = "GAME OVER YOU LOST";
+                    }
+                }
+                else if(play === "You Lose"){
+                    compScore++;
+                    computerScore.textContent = compScore.toString();
+                    if(playScore === 5){
+                        resultDiv.innerHTML = "GAME OVER YOU WON";
+                    }
+                    else if(compScore === 5){
+                        resultDiv.innerHTML = "GAME OVER YOU LOST";
+                    }
+                }
+            }
+                    
+                
+            });
+        });
+
         function computerPlay(){
             let array = ["rock", "paper", "scissors"];
             let random = Math.floor(Math.random() * array.length);
             let computer = array[random];
             return computer;
         }
-        //console.log(computerPlay());
         function playRound(playerSelection, computerSelection){
             if(playerSelection === computerSelection){
                 return "Tie"
@@ -42,40 +103,11 @@
                 else{
                     return "You Win";    
                 }
-            }       
+            }
         }
-
-        function game(){
-            let playerScore = 0;
-            let computerScore = 0;
-            for(let i = 0; i < 5; i++){
-                playerPrompt = prompt("Select you move (rock, paper or scissors)");
-                const playerSelection = playerPrompt.toLowerCase();
-                const computerSelection = computerPlay();
-                console.log(playRound(playerSelection.toLowerCase(), computerSelection));
-                if(playRound(playerSelection, computerSelection) === "You Win"){
-                    playerScore++;
-                }
-                else if(playRound(playerSelection, computerSelection) === "You Lose"){
-                    computerScore++;
-                }
-                
-            }
-            if (playerScore > computerScore){
-                console.log("You are the winner!");
-            }
-            else if (playerScore < computerScore){
-                console.log("You are the loser!");
-            }
-            else{
-                console.log("It is a draw!");
-            }
-            console.log(playerScore, computerScore);
-        }
-        game();
-
-        
     </script>
+
+    
     
 </body>
 </html>
